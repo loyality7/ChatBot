@@ -5,17 +5,16 @@ const Setting = ({ modalOpen, setModalOpen }) => {
   const apiKey = window.localStorage.getItem('api-key') || '';
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const [input, setInput] = useState('');
 
   const saveKey = async (e) => {
     e.preventDefault();
     setLoading(true);
     setErrorMsg('');
-    const keys = input;
+    const key = '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'; // Replace 'YOUR_API_KEY' with your actual API key
 
-    await checkApiKey(keys)
+    await checkApiKey(key)
       .then(() => {
-        window.localStorage.setItem('api-key', keys);
+        window.localStorage.setItem('api-key', key);
         console.log('works');
         setModalOpen(false);
       })
@@ -29,12 +28,11 @@ const Setting = ({ modalOpen, setModalOpen }) => {
 
   const removeApiKey = () => {
     window.localStorage.removeItem('api-key');
-    setInput('');
   };
 
   useEffect(() => {
     if (modalOpen) {
-      setInput(apiKey);
+      // setInput(apiKey); // Remove this line since we no longer use input field for API key
     }
   }, [apiKey, modalOpen]);
 
@@ -55,12 +53,13 @@ const Setting = ({ modalOpen, setModalOpen }) => {
         </a>
         .
       </p>
-      <input
+      {/* Remove the input field for API key */}
+      {/* <input
         value={input}
         onChange={(e) => setInput(e.target.value)}
         type='password'
         className='w-full max-w-xs input input-bordered'
-      />
+      /> */}
       <button disabled={loading} className='w-full max-w-xs btn btn-outline'>
         {loading ? (
           <span className='w-56 progress progress-info' />
@@ -68,7 +67,7 @@ const Setting = ({ modalOpen, setModalOpen }) => {
           'save to localStorage'
         )}
       </button>
-      {apiKey && input && (
+      {apiKey && (
         <span
           onClick={removeApiKey}
           disabled={loading}
